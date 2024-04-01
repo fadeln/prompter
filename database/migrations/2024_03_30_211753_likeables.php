@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('prompts', function (Blueprint $table) {
-            $table->dropColumn('favorites');
+        Schema::create('likeables', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('likeable_id');
+            $table->string('likeable_type');
+            $table->timestamps();
+
+            
         });
     }
 
@@ -21,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('prompts', function (Blueprint $table) {
-            $table->unsignedInteger('favorites')->default(0);
-        });
+        //
     }
 };

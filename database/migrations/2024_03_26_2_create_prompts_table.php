@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained();
             $table->foreignId('tag_id')->nullable();
             $table->foreignId('user_id')->constrained();
-            $table->unsignedInteger('favorites')->default(0);
             $table->timestamps();
         });
     }

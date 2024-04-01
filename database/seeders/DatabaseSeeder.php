@@ -33,25 +33,25 @@ class DatabaseSeeder extends Seeder
             'slug' => 'general',
         ]);
 
-        User::create([
-            'id' => 1,
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password'=> bcrypt('1'),
-        ]);
+        // User::create([
+        //     'id' => 1,
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        //     'password'=> bcrypt('1'),
+        // ]);
 
        
-        Prompt::create([
-            'prompt'=>'from testt',
-            'user_id'=>1,
-            'category_id'=>1,
-        ]);
+        // Prompt::create([
+        //     'prompt'=>'from testt',
+        //     'user_id'=>1,
+        //     'category_id'=>1,
+        // ]);
 
-        Comment::create([
-            'user_id' => 1,
-            'prompt_id' => 1,
-            'comment' => 'This is a sample comment.',
-        ]);
+        // Comment::create([
+        //     'user_id' => 1,
+        //     'prompt_id' => 1,
+        //     'comment' => 'This is a sample comment.',
+        // ]);
 
         
 

@@ -43,15 +43,12 @@ class User extends Authenticatable
         return $this->morphOne(Image::class,'imageable');
     }
 
-    public function likes()
-    {
-        return $this->belongsToMany(Prompt::class, 'prompt_like')->withTimestamps();
+    public function favorites(){
+        return $this->belongsToMany(Prompt::class,'favorite_prompt')->withTimestamps();
     }
-
     
-
-    public function isLiked(Prompt $prompt){
-        return $this->likes()->where('prompt_id',$prompt->id)->exists();
+    public function isFavorited(Prompt $prompt){
+        return $this->favorites()->where('prompt_id',$prompt->id)->exists();
     }
 
     public function prompt()
@@ -69,5 +66,30 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Morph relationship
+    public function likePrompts()
+    {
+        return $this->morphedByMany(Prompt::class, 'likeable');
+    }
+ 
+
+    public function likeComments()
+    {
+        return $this->morphedByMany(Comment::class, 'likeable');
+    }
+    public function isLikedPrompt(Prompt $prompt)
+    {
+        return $this->likePrompts()->where('likeable_id', $prompt->id)
+                                   ->where('likeable_type', get_class($prompt))
+                                   ->exists();
+    }
+
+    public function isLikedComment(Comment $comment)
+    {
+        return $this->likeComments()->where('likeable_id', $comment->id)
+                                    ->where('likeable_type', get_class($comment))
+                                    ->exists();
     }
 }

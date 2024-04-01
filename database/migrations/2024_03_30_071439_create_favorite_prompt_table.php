@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prompt_favorite', function (Blueprint $table) {
+        Schema::create('favorite_prompt', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('prompt_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            // Add unique constraint
+            $table->unique(['user_id', 'prompt_id']);
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prompt_favorite');
+        Schema::dropIfExists('favorites');
     }
 };

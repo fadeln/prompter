@@ -16,9 +16,8 @@ class Prompt extends Model
         return $this->morphOne(Image::class,'imageable');
     }
 
-    public function likes()
-    {
-        return $this->belongsToMany(User::class, 'prompt_like')->withTimestamps();
+    public function favorites(){
+        return $this->belongsToMany(User::class,'favorite_prompt')->withTimestamps();
     }
 
     public function user()
@@ -38,4 +37,8 @@ class Prompt extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function likes()
+    {
+        return $this->morphToMany(User::class, 'likeable');
+    }
 }

@@ -82,51 +82,50 @@ class PromptController extends Controller
         }
 
         $categories = Category::all();
-        return view('prompt.edit', ['prompt' => $prompt,'categories'=> $categories]);
+        return view('prompt.edit', ['prompt' => $prompt, 'categories' => $categories]);
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Prompt $prompt)
-{
-    if ($prompt->user_id != $request->user()->id) {
-        abort(403);
-    }
-
-    $data = $request->validate([
-        'prompt' => ['required', 'string'],
-        'category_id' => ['required'],
-    ]);
-
-    $prompt->update($data);
-    $tagIds = $this->syncTags($request->input('tags'));
-
-    if ($request->has('image_url')) {
-        $prompt->image()->update(['url' => $request->input('image_url')]);
-    }
-
-    $prompt->tags()->sync($tagIds);
-
-    return redirect()->route('prompt.show', $prompt)->with('success', 'Prompt updated');
-}
-
-private function syncTags($tagsInput)
-{
-    $tags = preg_split('/[,# ]+/', $tagsInput);
-    $tags = array_filter($tags);
-    $tagIds = [];
-    foreach ($tags as $tagName) {
-        $tagName = trim($tagName);
-        if (!empty($tagName) && $tagName[0] !== '#') {
-            $tagName = '#' . $tagName;
+    {
+        if ($prompt->user_id != $request->user()->id) {
+            abort(403);
         }
-        $tag = Tag::firstOrCreate(['name' => $tagName]);
-        $tagIds[] = $tag->id;
-    }
-    return $tagIds;
-}
 
+        $data = $request->validate([
+            'prompt' => ['required', 'string'],
+            'category_id' => ['required'],
+        ]);
+
+        $prompt->update($data);
+        $tagIds = $this->syncTags($request->input('tags'));
+
+        if ($request->has('image_url')) {
+            $prompt->image()->update(['url' => $request->input('image_url')]);
+        }
+
+        $prompt->tags()->sync($tagIds);
+
+        return redirect()->route('prompt.show', $prompt)->with('success', 'Prompt updated');
+    }
+
+    private function syncTags($tagsInput)
+    {
+        $tags = preg_split('/[,# ]+/', $tagsInput);
+        $tags = array_filter($tags);
+        $tagIds = [];
+        foreach ($tags as $tagName) {
+            $tagName = trim($tagName);
+            if (!empty($tagName) && $tagName[0] !== '#') {
+                $tagName = '#' . $tagName;
+            }
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $tagIds[] = $tag->id;
+        }
+        return $tagIds;
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -145,17 +144,37 @@ private function syncTags($tagsInput)
     /**
      * Gives a like to the prompt
      */
-    // public function like(Request $request, Prompt $prompt)
-    // {
-    //     $user = $request->user();
-    //     $like = $user->likes()->where('note_id', $prompt->id)->first();
+    public function like(Request $request, Prompt $prompt)
+    {
+        $user = request()->user();
 
-    //     if ($like) {
-    //         $like->delete();
-    //     } else {
-    //         $user->likes()->create(['note_id' => $prompt->id]);
-    //     }
+        if (
+            !$user
+                ->likePrompts()
+                ->where('likeable_id', $prompt->id)
+                ->where('likeable_type', get_class($prompt))
+                ->exists()
+        ) {
+            $user->likePrompts()->attach($prompt->id);
+        }
 
-    //     return redirect()->back();
-    // }
+        return back()->with('success', 'liked success!');
+    }
+
+    public function unLike(Request $request, Prompt $prompt)
+    {
+        $user = request()->user();
+
+        if (
+            $user
+                ->likePrompts()
+                ->where('likeable_id', $prompt->id)
+                ->where('likeable_type', get_class($prompt))
+                ->exists()
+        ) {
+            $user->likePrompts()->detach($prompt->id);
+        }
+
+        return back()->with('success', 'liked success!');
+    }
 }
