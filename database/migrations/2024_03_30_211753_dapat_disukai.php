@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dapat_disukai', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('dapat_disukai_id');
+            $table->unsignedBigInteger('yang_dapat_disukai_id');
             $table->string('dapat_disukai_type');
             $table->timestamps();
 

@@ -39,6 +39,7 @@ class Prompt extends Model
 
     public function likes()
     {
-        return $this->morphToMany(User::class, 'dapat_disukai');
+        return $this->morphToMany(User::class, 'dapat_disukai', 'dapat_disukai', 'dapat_disukai_id', 'user_id');
     }
+    
 }

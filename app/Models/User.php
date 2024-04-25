@@ -71,7 +71,7 @@ class User extends Authenticatable
     // Morph relationship
     public function likePrompts()
     {
-        return $this->morphedByMany(Prompt::class, 'dapat_disukai','dapat_disukai_id');
+        return $this->morphToMany(User::class, 'dapat_disukai', 'dapat_disukai', 'dapat_disukai_id', 'user_id');
     }
  
 
@@ -81,9 +81,9 @@ class User extends Authenticatable
     }
     public function isLikedPrompt(Prompt $prompt)
     {
-        return $this->likePrompts()->where('dapat_disukai_id', $prompt->id)
-                                   ->where('dapat_disukai_type', get_class($prompt))
-                                   ->exists();
+        return $this->likePrompts()->where('yang_dapat_disukai_id', $prompt->id)
+        ->where('dapat_disukai_type', get_class($prompt))
+        ->exists();
     }
 
     public function isLikedComment(Comment $comment)
