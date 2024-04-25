@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('likeables', function (Blueprint $table) {
+        Schema::create('komentar', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('likeable_id');
-            $table->string('likeable_type');
+            $table->text('komentar');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('prompt_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-
-            
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('komentar');
     }
 };

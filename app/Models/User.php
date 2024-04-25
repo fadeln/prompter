@@ -36,15 +36,15 @@ class User extends Authenticatable
 
 
     public function comments(){
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class, 'komentar');
     }
 
     public function image(){
-        return $this->morphOne(Image::class,'imageable');
+        return $this->morphOne(Image::class,'gambar');
     }
 
     public function favorites(){
-        return $this->belongsToMany(Prompt::class,'favorite_prompt')->withTimestamps();
+        return $this->belongsToMany(Prompt::class,'favorit_prompt')->withTimestamps();
     }
     
     public function isFavorited(Prompt $prompt){
@@ -71,25 +71,25 @@ class User extends Authenticatable
     // Morph relationship
     public function likePrompts()
     {
-        return $this->morphedByMany(Prompt::class, 'likeable');
+        return $this->morphedByMany(Prompt::class, 'dapat_disukai','dapat_disukai_id');
     }
  
 
     public function likeComments()
     {
-        return $this->morphedByMany(Comment::class, 'likeable');
+        return $this->morphedByMany(Comment::class, 'dapat_disukai','dapat_disukai_id');
     }
     public function isLikedPrompt(Prompt $prompt)
     {
-        return $this->likePrompts()->where('likeable_id', $prompt->id)
-                                   ->where('likeable_type', get_class($prompt))
+        return $this->likePrompts()->where('dapat_disukai_id', $prompt->id)
+                                   ->where('dapat_disukai_type', get_class($prompt))
                                    ->exists();
     }
 
     public function isLikedComment(Comment $comment)
     {
-        return $this->likeComments()->where('likeable_id', $comment->id)
-                                    ->where('likeable_type', get_class($comment))
+        return $this->likeComments()->where('dapat_disukai_id', $comment->id)
+                                    ->where('dapat_disukai_type', get_class($comment))
                                     ->exists();
     }
 }

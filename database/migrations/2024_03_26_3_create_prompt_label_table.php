@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         // pivot table for many-to-many relationship
-        Schema::create('prompt_tag', function (Blueprint $table) {
+        Schema::create('prompt_label', function (Blueprint $table) {
             $table->unsignedBigInteger('prompt_id');
             $table->foreign('prompt_id')->references('id')->on('prompts')->onDelete('cascade');
         
-            $table->unsignedBigInteger('tag_id');
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->unsignedBigInteger('label_id');
+            $table->foreign('label_id')->references('id')->on('label')->onDelete('cascade');
         
             // Add any additional columns if necessary
         
