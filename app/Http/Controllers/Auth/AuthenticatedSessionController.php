@@ -28,6 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // return to_route('prompt.index')->with('success', 'prompt deleted');
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

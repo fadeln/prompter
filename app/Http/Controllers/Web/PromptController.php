@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Prompt;
 use App\Models\Tag;
@@ -13,9 +14,15 @@ class PromptController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $prompts = Prompt::query()->orderBy('created_at', 'desc')->paginate(10);
+        $query = $request->input('query');
+
+        // Retrieve prompts filtered by search query
+        $prompts = Prompt::where('prompt', 'like', '%' . $query . '%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
         return view('prompt.index', ['prompts' => $prompts]);
     }
 
@@ -176,5 +183,12 @@ class PromptController extends Controller
         }
 
         return back()->with('success', 'liked success!');
+    }
+
+    public function favorites()
+    {
+        $user = request()->user();
+        $prompts = $user->favorites()->orderBy('created_at', 'desc')->paginate(10);
+        return view('prompt.favorites', ['prompts' => $prompts]);
     }
 }

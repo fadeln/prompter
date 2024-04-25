@@ -1,0 +1,187 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "User API",
+        "description": "User API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000"
+        }
+    ],
+    "paths": {
+        "/api/users": {
+            "post": {
+                "description": "Register new user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "examples": {
+                                "reina": {
+                                    "description": "Register user reina",
+                                    "value": {
+                                        "username": "reina",
+                                        "password": "pass",
+                                        "email": "reina@testmail.com"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": ["name", "password", "email"],
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "validationerror": {
+                                        "description": "Validation error",
+                                        "value": {
+                                            "errors": {
+                                                "username": [
+                                                    "Username required",
+                                                    "Username must unique"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Success register user",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "description": "Success register user",
+                                        "value": {
+                                            "data": {
+                                                "id": 1,
+                                                "username": "reina",
+                                                "email": "reina@testmail.com"
+                                            }
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+                "description": "Login user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["email", "password"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "token": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/current": {
+            "get": {
+                "description": "Get current user",
+                "parameters": [
+                    {
+                        "name": "X-User-Token",
+                        "in":"header"
+                    }
+                ]
+            },
+            "patch": {
+                "description": "Update current user"
+            }
+        },
+        "/api/users/logout": {
+            "delete": {
+                "description": "Logout current user"
+            }
+        }
+    }
+}
