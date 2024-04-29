@@ -10,7 +10,6 @@ class Comment extends Model
     protected $table = 'komentar';
 
     use HasFactory;
-
     
     protected $fillable = ['user_id','prompt_id','komentar'];
 
@@ -23,6 +22,6 @@ class Comment extends Model
     }
     public function likes()
     {
-        return $this->morphToMany(User::class, 'dapat_disukai_id');
+        return $this->morphToMany(User::class, 'dapat_disukai','dapat_disukai','yang_dapat_disukai_id', 'user_id');
     }
 }

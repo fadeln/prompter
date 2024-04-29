@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('dapat_disukai_type');
             $table->timestamps();
 
-            
         });
     }
 

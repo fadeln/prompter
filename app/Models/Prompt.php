@@ -10,7 +10,11 @@ class Prompt extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['prompt', 'user_id','kategori_id'];
+    protected $casts = [
+        'judul' => 'string',
+    ];
+
+    protected $fillable = ['prompt', 'user_id','kategori_id','judul'];
 
     public function image(){
         return $this->morphOne(Image::class,'dapat_digambar');
@@ -39,7 +43,7 @@ class Prompt extends Model
 
     public function likes()
     {
-        return $this->morphToMany(User::class, 'dapat_disukai', 'dapat_disukai', 'dapat_disukai_id', 'user_id');
+        return $this->morphToMany(User::class, 'dapat_disukai','dapat_disukai','yang_dapat_disukai_id', 'user_id');
     }
     
 }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('prompts', function (Blueprint $table) {
             $table->id();
+            $table->string('judul');
             $table->longText('prompt');
             $table->foreignId('kategori_id')->constrained('kategori');
             $table->foreignId('label_id')->nullable()->constrained('label');

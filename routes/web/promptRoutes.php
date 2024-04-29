@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth','verified'])->prefix('prompts')->group(function () {
     Route::get('/', [PromptController::class, 'index'])->name('prompt.index');
+    Route::get('/table', [PromptController::class, 'table'])->name('prompt.table');
+
     Route::get('/create', [PromptController::class, 'create'])->name('prompt.create');
     Route::post('/', [PromptController::class, 'store'])->name('prompt.store');
 

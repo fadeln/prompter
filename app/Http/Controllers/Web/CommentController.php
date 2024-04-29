@@ -14,6 +14,7 @@ class CommentController extends Controller
         $data = $request->validate([
             'comment' => ['required', 'string'],
         ]);
+        
         $data['user_id'] = $request->user()->id;
         $data['prompt_id'] = $prompt->id;
 

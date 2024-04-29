@@ -98,6 +98,8 @@
 
     </div>
     <!-- End of .container -->
+
+    @stack('scripts')
 </body>
 
 </html>

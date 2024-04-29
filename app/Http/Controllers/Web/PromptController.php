@@ -8,6 +8,9 @@ use App\Models\Prompt;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\DataTables\PromptsDataTable;
+use App\DataTables\UsersDataTable;
+use App\Http\Requests\PromptRequest;
 
 class PromptController extends Controller
 {
@@ -38,12 +41,10 @@ class PromptController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PromptRequest $request)
     {
-        $data = $request->validate([
-            'prompt' => ['required', 'string'],
-            'category_id' => ['required'],
-        ]);
+        $data = $request->validated();
+
         $data['user_id'] = request()->user()->id;
 
         $prompt = Prompt::create($data);
@@ -56,7 +57,7 @@ class PromptController extends Controller
             if (!empty($tagName) && $tagName[0] !== '#') {
                 $tagName = '#' . $tagName;
             }
-            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $tag = Tag::firstOrCreate(['nama' => $tagName]);
             $tagIds[] = $tag->id;
         }
 
@@ -95,16 +96,13 @@ class PromptController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Prompt $prompt)
+    public function update(PromptRequest $request, Prompt $prompt)
     {
         if ($prompt->user_id != $request->user()->id) {
             abort(403);
         }
 
-        $data = $request->validate([
-            'prompt' => ['required', 'string'],
-            'category_id' => ['required'],
-        ]);
+        $data = $request->validated();
 
         $prompt->update($data);
         $tagIds = $this->syncTags($request->input('tags'));
@@ -158,8 +156,8 @@ class PromptController extends Controller
         if (
             !$user
                 ->likePrompts()
-                ->where('likeable_id', $prompt->id)
-                ->where('likeable_type', get_class($prompt))
+                ->where('yang_dapat_disukai_id', $prompt->id)
+                ->where('dapat_disukai_type', get_class($prompt))
                 ->exists()
         ) {
             $user->likePrompts()->attach($prompt->id);
@@ -175,8 +173,8 @@ class PromptController extends Controller
         if (
             $user
                 ->likePrompts()
-                ->where('likeable_id', $prompt->id)
-                ->where('likeable_type', get_class($prompt))
+                ->where('yang_dapat_disukai_id', $prompt->id)
+                ->where('dapat_disukai_type', get_class($prompt))
                 ->exists()
         ) {
             $user->likePrompts()->detach($prompt->id);
@@ -190,5 +188,10 @@ class PromptController extends Controller
         $user = request()->user();
         $prompts = $user->favorites()->orderBy('created_at', 'desc')->paginate(10);
         return view('prompt.favorites', ['prompts' => $prompts]);
+    }
+
+    public function table(PromptsDataTable $dataTable)
+    {
+        return $dataTable->render('prompt.table');
     }
 }

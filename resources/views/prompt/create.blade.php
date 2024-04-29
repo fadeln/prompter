@@ -9,6 +9,11 @@
                         <form action="{{ route('prompt.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
+                                <label for="judul" class="form-label">{{ __('PromptTitle Content') }}</label>
+                                <input type="text" class="form-control" id="judul" name="judul" rows="5"></input>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="prompt" class="form-label">{{ __('Prompt Content') }}</label>
                                 <textarea class="form-control" id="prompt" name="prompt" rows="5"></textarea>
                             </div>
@@ -18,8 +23,8 @@
                                 <div>
                                     @foreach ($categories as $category)
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="category_id" id="category{{ $category->id }}" value="{{ $category->id }}">
-                                            <label class="form-check-label" for="category{{ $category->id }}">{{ $category->title }}</label>
+                                            <input class="form-check-input" type="radio" name="kategori_id" id="category{{ $category->id }}" value="{{ $category->id }}">
+                                            <label class="form-check-label" for="category{{ $category->id }}">{{ $category->judul }}</label>
                                         </div>
                                     @endforeach
                                 </div>
@@ -44,5 +49,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>   
 @endsection
+
