@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('komentar');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('prompt_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('prompt_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

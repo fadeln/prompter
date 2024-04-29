@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('gambar', function (Blueprint $table) {
             $table->id();
             $table->string('url')->nullable();
-            $table->unsignedBigInteger('dapat_digambar_id');
+            $table->uuid('dapat_digambar_id')->nullable(); 
             $table->string('dapat_digambar_type');
             $table->timestamps();
         });

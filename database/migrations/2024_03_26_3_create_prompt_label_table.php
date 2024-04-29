@@ -13,7 +13,7 @@ return new class extends Migration
     {
         // pivot table for many-to-many relationship
         Schema::create('prompt_label', function (Blueprint $table) {
-            $table->unsignedBigInteger('prompt_id');
+            $table->uuid('prompt_id');
             $table->foreign('prompt_id')->references('id')->on('prompts')->onDelete('cascade');
         
             $table->unsignedBigInteger('label_id');

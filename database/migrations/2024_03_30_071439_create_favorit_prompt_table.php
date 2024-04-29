@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('favorit_prompt', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('prompt_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('prompt_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
 
             // Add unique constraint

@@ -6,49 +6,47 @@
                 <div class="card">
                     <div class="card-header">{{ __('Create Prompt') }}</div>
                     <div class="card-body">
-                        <form action="{{ route('prompt.store') }}" method="POST">
-                            @csrf
+                        {!! Form::open(['route' => 'prompt.store', 'method' => 'POST']) !!}
                             <div class="mb-3">
-                                <label for="judul" class="form-label">{{ __('PromptTitle Content') }}</label>
-                                <input type="text" class="form-control" id="judul" name="judul" rows="5"></input>
+                                {!! Form::label('judul', __('Prompt Title Content'), ['class' => 'form-label']) !!}
+                                {!! Form::text('judul', null, ['class' => 'form-control']) !!}
                             </div>
 
                             <div class="mb-3">
-                                <label for="prompt" class="form-label">{{ __('Prompt Content') }}</label>
-                                <textarea class="form-control" id="prompt" name="prompt" rows="5"></textarea>
+                                {!! Form::label('prompt', __('Prompt Content'), ['class' => 'form-label']) !!}
+                                {!! Form::textarea('prompt', null, ['class' => 'form-control', 'rows' => 5]) !!}
                             </div>
                             
                             <div class="mb-3">
-                                <label class="form-label">{{ __('Category') }}</label>
+                                {!! Form::label('category', __('Category'), ['class' => 'form-label']) !!}
                                 <div>
                                     @foreach ($categories as $category)
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="kategori_id" id="category{{ $category->id }}" value="{{ $category->id }}">
-                                            <label class="form-check-label" for="category{{ $category->id }}">{{ $category->judul }}</label>
+                                            {!! Form::radio('kategori_id', $category->id, null, ['class' => 'form-check-input', 'id' => 'category'.$category->id]) !!}
+                                            {!! Form::label('category'.$category->id, $category->judul, ['class' => 'form-check-label']) !!}
                                         </div>
                                     @endforeach
                                 </div>
                             </div>
                             
                             <div class="mb-3">
-                                <label for="tags" class="form-label">{{ __('Tags') }}</label>
-                                <input type="text" class="form-control" id="tags" name="tags" placeholder="e.g., #programming #web">
+                                {!! Form::label('label', __('Tags'), ['class' => 'form-label']) !!}
+                                {!! Form::text('label', null, ['class' => 'form-control', 'placeholder' => __('e.g., #programming #web')]) !!}
                             </div>
                             
                             <div class="mb-3">
-                                <label for="image_url" class="form-label">{{ __('Image URL') }}</label>
-                                <input type="text" class="form-control" id="image_url" name="image_url" placeholder="e.g., https://www.example.com/">
+                                {!! Form::label('image_url', __('Image URL'), ['class' => 'form-label']) !!}
+                                {!! Form::text('image_url', null, ['class' => 'form-control', 'placeholder' => __('e.g., https://www.example.com/')]) !!}
                             </div>
                             
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                {!! Form::submit(__('Create'), ['class' => 'btn btn-primary']) !!}
                                 <a href="{{ route('prompt.index') }}" class="btn btn-secondary me-md-2">{{ __('Cancel') }}</a>
-                                <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
                             </div>
-                        </form>
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
         </div>
     </div>   
 @endsection
-

@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prompts', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('judul');
             $table->longText('prompt');
             $table->foreignId('kategori_id')->constrained('kategori');
             $table->foreignId('label_id')->nullable()->constrained('label');
             // $table->foreign('label_id')->references('id')->on('label')->nullable();
             $table->foreignId('user_id')->constrained();
-            $table->timestamps();
+            $table->timestamp('dibuat_pada')->useCurrent();
+            $table->timestamp('diubah_pada')->useCurrent()->nullable()->default(null)->onUpdate('CURRENT_TIMESTAMP');
         });
     }
 

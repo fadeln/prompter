@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Prompt;
+use App\Models\Komentar;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class PromptsDataTable extends DataTable
+class KomentarDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,16 +22,16 @@ class PromptsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'prompts.action')
+            ->addColumn('action', 'komentar.action')
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Prompt $model): QueryBuilder
+    public function query(Komentar $model): QueryBuilder
     {
-        return $model->newQuery()->with('user');
+        return $model->newQuery();
     }
 
     /**
@@ -40,7 +40,7 @@ class PromptsDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('prompts-table')
+                    ->setTableId('komentar-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -62,11 +62,15 @@ class PromptsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::computed('action')
+                  ->exportable(false)
+                  ->printable(false)
+                  ->width(60)
+                  ->addClass('text-center'),
             Column::make('id'),
-            Column::make('judul'),
-            Column::make('author')->data('user.name'),
-            Column::make('dibuat_pada'),
-            Column::make('diubah_pada'),
+            Column::make('add your columns'),
+            Column::make('created_at'),
+            Column::make('updated_at'),
         ];
     }
 
@@ -75,6 +79,6 @@ class PromptsDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Prompts_' . date('YmdHis');
+        return 'Komentar_' . date('YmdHis');
     }
 }

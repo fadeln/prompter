@@ -3,18 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\relations\HasMany;
 
 class Prompt extends Model
 {
-    use HasFactory;
+    use HasFactory,HasUuids;
 
     protected $casts = [
         'judul' => 'string',
     ];
-
     protected $fillable = ['prompt', 'user_id','kategori_id','judul'];
+    public $timestamps = false;
+    public $incrementing = false;
+    protected $primaryKey = 'id';
+    const CREATED_AT = 'dibuat_pada';
+    const UPDATED_AT = 'diubah_pada';
 
     public function image(){
         return $this->morphOne(Image::class,'dapat_digambar');

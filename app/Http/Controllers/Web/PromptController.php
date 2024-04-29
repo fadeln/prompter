@@ -22,9 +22,11 @@ class PromptController extends Controller
         $query = $request->input('query');
 
         // Retrieve prompts filtered by search query
-        $prompts = Prompt::where('prompt', 'like', '%' . $query . '%')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        // $prompts = Prompt::where('prompt', 'like', '%' . $query . '%')
+        //     ->orderBy('created_at', 'desc')
+        //     ->paginate(10);
+        $prompts = Prompt::all();
+
 
         return view('prompt.index', ['prompts' => $prompts]);
     }
